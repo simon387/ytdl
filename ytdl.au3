@@ -1,6 +1,7 @@
 #cs
    interfaccia grafica di youtube-dl
 #ce
+#pragma compile(Icon, .\shell32_299.ico)
 
 #NoTrayIcon
 ;~ #include <ButtonConstants.au3>
@@ -21,7 +22,7 @@
 Global Const $tagSECURITY_ATTRIBUTES = "dword Length;ptr Descriptor;bool InheritHandle"
 
 _Singleton(@ScriptName)
-Global Const $form_main = GUICreate("YTDLUI by simon - v0.11 - {esc} per forzare uscita!", 523, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
+Global Const $form_main = GUICreate("YTDLUI by simon - v0.12 - {esc} per forzare uscita!", 523, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
 Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 152, 10, 281, 21)
 	GUICtrlSetTip(-1, "Incolla qui il link di una pagina di youtube", "Info", 1, 1)
 Global Const $button_paste = GUICtrlCreateButton("Incolla", 440, 8, 75, 25)
@@ -73,6 +74,7 @@ Func button_clicked()
 			FileInstall(".\ffmpeg.exe",  @TempDir & "\ffmpeg.exe",  0)
 			FileInstall(".\ffplay.exe",  @TempDir & "\ffplay.exe",  0)
 			FileInstall(".\ffprobe.exe", @TempDir & "\ffprobe.exe", 0)
+			FileInstall(".\msvcr100.dll", @TempDir & "\msvcr100.dll", 0)
 			$string_2 = '-x --audio-quality 0 --audio-format mp3'
 		Case @GUI_CtrlId = $button_info
 			$string_1 = @TempDir & '\youtube-dl.exe -h'
