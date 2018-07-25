@@ -1,38 +1,37 @@
 #pragma compile(Icon, .\shell32_299.ico)
-#NoTrayIcon;#include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
-_singleton(@ScriptName)
+#NoTrayIcon
+_singleton(@ScriptName); #include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
 Global Const $form_main = GUICreate("YTDLUI by simon - v0.13 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
 Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 8, 10, 391, 21)
 GUICtrlSetTip(-1, "Paste here youtube link", "Info", 1, 1)
 Global Const $button_paste = GUICtrlCreateButton("Paste", 411, 8, 123, 25)
 GUICtrlSetTip(-1, "Paste from clipboard", "Info", 1, 1)
+GUICtrlSetOnEvent(-1, "button_paste_clicked")
 Global Const $input_dest = GUICtrlCreateInput(@ScriptDir, 8, 42, 391, 21)
 GUICtrlSetTip(-1, "Download destination", "Info", 1, 1)
 Global Const $button_select = GUICtrlCreateButton("Change", 411, 40, 123, 25)
 GUICtrlSetTip(-1, "Change download destination", "Info", 1, 1)
+GUICtrlSetOnEvent(-1, "button_select_clicked")
 Global Const $button_video = GUICtrlCreateButton("Download video", 8, 288, 123, 25)
 GUICtrlSetTip(-1, "Start Video Download", "Info", 1, 1)
+GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_mp3 = GUICtrlCreateButton("Download mp3", 143, 288, 123, 25)
 GUICtrlSetTip(-1, "Start Mp3 Download", "Info", 1, 1)
 GUICtrlSetBkColor(-1, 16711680);#include <ColorConstants.au3>
 GUICtrlSetColor(-1, 16777215 )
+GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_update = GUICtrlCreateButton("Update", 277, 288, 123, 25)
 GUICtrlSetTip(-1, "Update to last YTDL version", "Info", 1, 1)
+GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_info = GUICtrlCreateButton("Nerd!", 412, 288, 123, 25)
 GUICtrlSetTip(-1, "youtube-dl.exe -h >> output", "NERD!", 2, 1)
+GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 525, 209, 70256832);BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_READONLY,$WS_HSCROLL,$WS_VSCROLL,$WS_CLIPSIBLINGS)
 GUISetState(@SW_SHOW)
-
 HotKeySet("{esc}", "close_clicked")
 Opt('GUIOnEventMode', 1)
 GUISetOnEvent(-3, "close_clicked", $form_main)
-GUICtrlSetOnEvent($button_video, "button_video_or_mp3_or_info_or_update_clicked")
-GUICtrlSetOnEvent($button_mp3, "button_video_or_mp3_or_info_or_update_clicked")
-GUICtrlSetOnEvent($button_info, "button_video_or_mp3_or_info_or_update_clicked")
-GUICtrlSetOnEvent($button_update, "button_video_or_mp3_or_info_or_update_clicked")
-GUICtrlSetOnEvent($button_select, "button_select_clicked")
-GUICtrlSetOnEvent($button_paste, "button_paste_clicked")
-Global $aAccelKeys[1][2] = [["{enter}", $button_video]]
+Global Const $aAccelKeys[1][2] = [["{enter}", $button_mp3]]
 GUISetAccelerators($aAccelKeys)
 Global $iPID = -1
 Global $m[2][8] = [[$button_video, $button_mp3, $button_select, $button_info, $button_update, $button_paste, $input_url, $input_dest], _
@@ -53,7 +52,7 @@ Func button_video_or_mp3_or_info_or_update_clicked()
 			FileInstall(".\ffmpeg.exe",   @TempDir & "\ffmpeg.exe", 0)
 			FileInstall(".\ffplay.exe",   @TempDir & "\ffplay.exe", 0)
 			FileInstall(".\ffprobe.exe",  @TempDir & "\ffprobe.exe", 0)
-			FileInstall(".\msvcr100.dll", @TempDir & "\msvcr100.dll", 0)
+			FileInstall(".\msvcr100.dll", @TempDir & "\msvcr100.dll", 0);ShellExecute(@TempDir)
 			$sAudioParam = '-x --audio-quality 0 --audio-format mp3'
 		Case @GUI_CtrlId = $button_info
 			$sCommand = @TempDir & '\youtube-dl.exe -h'
