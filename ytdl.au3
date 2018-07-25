@@ -1,49 +1,49 @@
 #pragma compile(Icon, .\shell32_299.ico)
 #NoTrayIcon;#include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
-_Singleton(@ScriptName)
-Global Const $form_main = GUICreate("YTDLUI by simon - v0.12 - {esc} per forzare uscita!", 523, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
-Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 152, 10, 281, 21)
-GUICtrlSetTip(-1, "Incolla qui il link di una pagina di youtube", "Info", 1, 1)
-Global Const $button_paste = GUICtrlCreateButton("Incolla", 440, 8, 75, 25)
-GUICtrlSetTip(-1, "Incolla il contenuto degli appunti", "Info", 1, 1)
-Global Const $input_dest = GUICtrlCreateInput(@ScriptDir, 152, 42, 281, 21)
-GUICtrlSetTip(-1, "Questa è la destinazione del download", "Info", 1, 1)
-Global Const $button_select = GUICtrlCreateButton("Seleziona", 440, 40, 75, 25)
-GUICtrlSetTip(-1, "Cambia la destinazione del download", "Info", 1, 1)
-Global Const $button_go = GUICtrlCreateButton("Download video", 8, 288, 123, 25)
-GUICtrlSetTip(-1, "Avvia il download del video", "Info", 1, 1)
-Global Const $button_mp3 = GUICtrlCreateButton("Download mp3", 152, 288, 123, 25)
-GUICtrlSetTip(-1, "Avvia il download nel formato mp3", "Info", 1, 1)
-Global Const $button_update = GUICtrlCreateButton("Aggiorna", 360, 288, 75, 25)
-GUICtrlSetTip(-1, "Scarica l'ultima versione del modulo YTDL", "Info", 1, 1)
-Global Const $button_info = GUICtrlCreateButton("Roba Nerd", 440, 288, 75, 25)
+_singleton(@ScriptName)
+Global Const $form_main = GUICreate("YTDLUI by simon - v0.13 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
+Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 8, 10, 391, 21)
+GUICtrlSetTip(-1, "Paste here youtube link", "Info", 1, 1)
+Global Const $button_paste = GUICtrlCreateButton("Paste", 411, 8, 123, 25)
+GUICtrlSetTip(-1, "Paste from clipboard", "Info", 1, 1)
+Global Const $input_dest = GUICtrlCreateInput(@ScriptDir, 8, 42, 391, 21)
+GUICtrlSetTip(-1, "Download destination", "Info", 1, 1)
+Global Const $button_select = GUICtrlCreateButton("Change", 411, 40, 123, 25)
+GUICtrlSetTip(-1, "Change download destination", "Info", 1, 1)
+Global Const $button_video = GUICtrlCreateButton("Download video", 8, 288, 123, 25)
+GUICtrlSetTip(-1, "Start Video Download", "Info", 1, 1)
+Global Const $button_mp3 = GUICtrlCreateButton("Download mp3", 143, 288, 123, 25)
+GUICtrlSetTip(-1, "Start Mp3 Download", "Info", 1, 1)
+GUICtrlSetBkColor(-1, 16711680);#include <ColorConstants.au3>
+GUICtrlSetColor(-1, 16777215 )
+Global Const $button_update = GUICtrlCreateButton("Update", 277, 288, 123, 25)
+GUICtrlSetTip(-1, "Update to last YTDL version", "Info", 1, 1)
+Global Const $button_info = GUICtrlCreateButton("Nerd!", 412, 288, 123, 25)
 GUICtrlSetTip(-1, "youtube-dl.exe -h >> output", "NERD!", 2, 1)
-Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 505, 209, 70256832);BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_READONLY,$WS_HSCROLL,$WS_VSCROLL,$WS_CLIPSIBLINGS)
-GUICtrlCreateLabel("Cartella di destinazione", 8, 44, 114, 17)
-GUICtrlCreateLabel("Link del video da elaborare", 8, 12, 134, 17)
+Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 525, 209, 70256832);BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_READONLY,$WS_HSCROLL,$WS_VSCROLL,$WS_CLIPSIBLINGS)
 GUISetState(@SW_SHOW)
 
 HotKeySet("{esc}", "close_clicked")
 Opt('GUIOnEventMode', 1)
 GUISetOnEvent(-3, "close_clicked", $form_main)
-GUICtrlSetOnEvent($button_go, "button_clicked")
-GUICtrlSetOnEvent($button_mp3, "button_clicked")
-GUICtrlSetOnEvent($button_info, "button_clicked")
-GUICtrlSetOnEvent($button_update, "button_clicked")
+GUICtrlSetOnEvent($button_video, "button_video_or_mp3_or_info_or_update_clicked")
+GUICtrlSetOnEvent($button_mp3, "button_video_or_mp3_or_info_or_update_clicked")
+GUICtrlSetOnEvent($button_info, "button_video_or_mp3_or_info_or_update_clicked")
+GUICtrlSetOnEvent($button_update, "button_video_or_mp3_or_info_or_update_clicked")
 GUICtrlSetOnEvent($button_select, "button_select_clicked")
 GUICtrlSetOnEvent($button_paste, "button_paste_clicked")
-Global $aAccelKeys[1][2] = [["{enter}", $button_go]]
+Global $aAccelKeys[1][2] = [["{enter}", $button_video]]
 GUISetAccelerators($aAccelKeys)
 Global $iPID = -1
-Global $m[2][8] = [[$button_go, $button_mp3, $button_select, $button_info, $button_update, $button_paste, $input_url, $input_dest], _
-	[GUICtrlRead($button_go), GUICtrlRead($button_mp3), GUICtrlRead($button_select), GUICtrlRead($button_info), GUICtrlRead($button_update), _
+Global $m[2][8] = [[$button_video, $button_mp3, $button_select, $button_info, $button_update, $button_paste, $input_url, $input_dest], _
+	[GUICtrlRead($button_video), GUICtrlRead($button_mp3), GUICtrlRead($button_select), GUICtrlRead($button_info), GUICtrlRead($button_update), _
 	GUICtrlRead($button_paste), GUICtrlRead($input_url), GUICtrlRead($input_dest)]]
 
-Func button_clicked()
+Func button_video_or_mp3_or_info_or_update_clicked()
 	If checkURL(GUICtrlRead($input_url)) = 0 Then Return
 	Local $path = GUICtrlRead($input_dest)
 	If FileExists($path) <> 1 And @GUI_CtrlId <> $button_info Then Return
-	disabilita()
+	disable_gui()
 	FileInstall(".\youtube-dl.exe", @TempDir & "\youtube-dl.exe", 0)
 	Local $sOutput = ""
 	Local $sCommand = @TempDir & '\youtube-dl.exe -o "' & $path & '\%(title)s-%(id)s.%(ext)s" ' & GUICtrlRead($input_url)
@@ -77,7 +77,7 @@ Func button_clicked()
 		If @error Then ExitLoop
 		If $sOutput <> '' Then GUICtrlSetData($edit_out, GUICtrlRead($edit_out) & $sOutput)
 	WEnd
-	abilita()
+	enable_gui()
 EndFunc
 
 Func button_paste_clicked()
@@ -85,19 +85,19 @@ Func button_paste_clicked()
 EndFunc
 
 Func button_select_clicked()
-	Local $temp = FileSelectFolder("Seleziona la cartella di destinazione", "", 7, "", $form_main)
+	Local $temp = FileSelectFolder("Select destination directory", "", 7, "", $form_main)
 	If $temp <> "" Then GUICtrlSetData($input_dest, $temp)
 EndFunc
 
 Func checkURL($string)
 	If $string == "" Then
-		GUICtrlSetData($edit_out, "URL mancante!")
+		GUICtrlSetData($edit_out, "Missing URL!")
 		Return 0
 	EndIf
 	Return 1
 EndFunc
 
-Func disabilita()
+Func disable_gui()
 	For $i = 0 To UBound($m, 2) -1
 		GUICtrlSetState($m[0][$i], 128)
 	Next
@@ -105,7 +105,7 @@ Func disabilita()
 	$m[1][7] = GUICtrlRead($input_dest)
 EndFunc
 
-Func abilita()
+Func enable_gui()
 	For $i = 0 To UBound($m, 2) -1
 		GUICtrlSetState($m[0][$i], 64)
 		GUICtrlSetData($m[0][$i], $m[1][$i])
@@ -128,7 +128,7 @@ While 1
 	Sleep(10000)
 WEnd
 
-Func _Singleton($sOccurenceName, $iFlag = 0)
+Func _singleton($sOccurenceName, $iFlag = 0)
 	Local Const $ERROR_ALREADY_EXISTS = 183
 	Local Const $SECURITY_DESCRIPTOR_REVISION = 1
 	Local Const $tagSECURITY_ATTRIBUTES = "dword Length;ptr Descriptor;bool InheritHandle"
