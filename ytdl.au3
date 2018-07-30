@@ -34,7 +34,7 @@ GUISetOnEvent(-3, "close_clicked", $form_main)
 Global Const $aAccelKeys[1][2] = [["{enter}", $button_mp3]]
 GUISetAccelerators($aAccelKeys)
 Global $iPID = -1
-Global $m[2][8] = [[$button_video, $button_mp3, $button_select, $button_info, $button_update, $button_paste, $input_url, $input_dest], _
+Global $mButtons[2][8] = [[$button_video, $button_mp3, $button_select, $button_info, $button_update, $button_paste, $input_url, $input_dest], _
 	[GUICtrlRead($button_video), GUICtrlRead($button_mp3), GUICtrlRead($button_select), GUICtrlRead($button_info), GUICtrlRead($button_update), _
 	GUICtrlRead($button_paste), GUICtrlRead($input_url), GUICtrlRead($input_dest)]]
 
@@ -97,17 +97,17 @@ Func checkURL($url)
 EndFunc
 
 Func disable_gui()
-	For $i = 0 To UBound($m, 2) -1
-		GUICtrlSetState($m[0][$i], 128)
+	For $i = 0 To UBound($mButtons, 2) -1
+		GUICtrlSetState($mButtons[0][$i], 128)
 	Next
-	$m[1][6] = GUICtrlRead($input_url)
-	$m[1][7] = GUICtrlRead($input_dest)
+	$mButtons[1][6] = GUICtrlRead($input_url)
+	$mButtons[1][7] = GUICtrlRead($input_dest)
 EndFunc
 
 Func enable_gui()
-	For $i = 0 To UBound($m, 2) -1
-		GUICtrlSetState($m[0][$i], 64)
-		GUICtrlSetData($m[0][$i], $m[1][$i])
+	For $i = 0 To UBound($mButtons, 2) -1
+		GUICtrlSetState($mButtons[0][$i], 64)
+		GUICtrlSetData($mButtons[0][$i], $mButtons[1][$i])
 	Next
 	$iPID = -1
 EndFunc
