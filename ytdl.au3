@@ -84,12 +84,12 @@ Func button_paste_clicked()
 EndFunc
 
 Func button_select_clicked()
-	Local $temp = FileSelectFolder("Select destination directory", "", 7, "", $form_main)
-	If $temp <> "" Then GUICtrlSetData($input_dest, $temp)
+	Local $destinationDirectory = FileSelectFolder("Select destination directory", "", 7, "", $form_main)
+	If $destinationDirectory <> "" Then GUICtrlSetData($input_dest, $destinationDirectory)
 EndFunc
 
-Func checkURL($string)
-	If $string == "" Then
+Func checkURL($url)
+	If $url == "" Then
 		GUICtrlSetData($edit_out, "Missing URL!")
 		Return 0
 	EndIf
