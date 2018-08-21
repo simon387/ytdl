@@ -1,4 +1,5 @@
 #pragma compile(Icon, .\shell32_299.ico)
+#pragma compile(Compression, 1)
 #NoTrayIcon
 #include "osFunctions.au3" ; #include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
 _singleton(@ScriptName)
@@ -53,7 +54,7 @@ Func button_video_or_mp3_or_info_or_update_clicked()
 			FileInstall(".\ffmpeg.exe",   @TempDir & "\ffmpeg.exe", 0)
 			FileInstall(".\ffplay.exe",   @TempDir & "\ffplay.exe", 0)
 			FileInstall(".\ffprobe.exe",  @TempDir & "\ffprobe.exe", 0)
-			FileInstall(".\msvcr100.dll", @TempDir & "\msvcr100.dll", 0);ShellExecute(@TempDir)
+			FileInstall(".\msvcr100.dll", @TempDir & "\msvcr100.dll", 0)
 			$sAudioParam = '-x --audio-quality 0 --audio-format mp3'
 		Case @GUI_CtrlId = $button_info
 			$sCommand = @TempDir & '\youtube-dl.exe -h'
