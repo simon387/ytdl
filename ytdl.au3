@@ -1,9 +1,12 @@
 #pragma compile(Icon, .\shell32_299.ico)
 #pragma compile(Compression, 1)
+
 #NoTrayIcon
 #include "osFunctions.au3" ; #include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
+
 _singleton(@ScriptName)
-Global Const $form_main = GUICreate("YTDLUI by simon - v0.13 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
+
+Global Const $form_main = GUICreate("YTDLUI by simon - v0.14 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
 Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 8, 10, 391, 21)
 GUICtrlSetTip(-1, "Paste here youtube link", "Info", 1, 1)
 Global Const $button_paste = GUICtrlCreateButton("Paste", 411, 8, 123, 25)
@@ -25,7 +28,7 @@ GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_update = GUICtrlCreateButton("Update", 277, 288, 123, 25)
 GUICtrlSetTip(-1, "Update to last YTDL version", "Info", 1, 1)
 GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
-Global Const $button_info = GUICtrlCreateButton("Nerd!", 412, 288, 123, 25)
+Global Const $button_info = GUICtrlCreateButton("About", 412, 288, 123, 25)
 GUICtrlSetTip(-1, "youtube-dl.exe -h >> output", "NERD!", 2, 1)
 GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 525, 209, 70256832);BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_READONLY,$WS_HSCROLL,$WS_VSCROLL,$WS_CLIPSIBLINGS)
@@ -58,6 +61,7 @@ Func button_video_or_mp3_or_info_or_update_clicked()
 			$sAudioParam = '-x --audio-quality 0 --audio-format mp3'
 		Case @GUI_CtrlId = $button_info
 			$sCommand = @TempDir & '\youtube-dl.exe -h'
+			ShellExecute("https://github.com/simon387/ytdl")
 		Case @GUI_CtrlId = $button_update
 			$sCommand = @TempDir & '\youtube-dl.exe -U'
 	EndSelect

@@ -1,5 +1,8 @@
 # ytdl
-a youtube-dl graphic interface for Windows systems
+
+A youtube-dl graphic interface for Windows systems
+
+[DOWNLOAD COMPILED EXE](https://github.com/simon387/ytdl/releases)
 
 + very easy to use
 + does not require installation
