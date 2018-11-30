@@ -12,6 +12,17 @@ A youtube-dl graphic interface for Windows systems
 
 ---
 
+## Developer's setup
+
+You need to download and put in this project's directory those files:
+
+1. ffmpeg.exe
+2. ffplay.exe
+3. ffprobe.exe
+4. youtube-dl-exe
+
+---
+
 ## License
 
 [MIT](https://github.com/simon387/ytdl/blob/master/LICENSE)
