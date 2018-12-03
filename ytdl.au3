@@ -1,3 +1,10 @@
+; #INDEX# =======================================================================================================================
+; Title .........: ytdl
+; AutoIt Version : 3.3.14.5
+; Description ...: GUI for youtube-dl software
+; Author(s) .....: Simone Celia
+; ===============================================================================================================================
+
 #pragma compile(Icon, .\shell32_299.ico)
 #pragma compile(Compression, 1)
 
@@ -5,6 +12,8 @@
 #include "osFunctions.au3" ; #include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
 
 _singleton(@ScriptName)
+
+#Region Global Variables and Constants with GUI code
 
 Global Const $form_main = GUICreate("YTDLUI by simon - v0.14 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
 Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 8, 10, 391, 21)
@@ -43,6 +52,18 @@ Global $mButtons[2][8] = [[$button_video, $button_mp3, $button_select, $button_i
 	[GUICtrlRead($button_video), GUICtrlRead($button_mp3), GUICtrlRead($button_select), GUICtrlRead($button_info), GUICtrlRead($button_update), _
 	GUICtrlRead($button_paste), GUICtrlRead($input_url), GUICtrlRead($input_dest)]]
 
+#EndRegion Global Variables and Constants with GUI code
+
+While 1
+	Sleep(10000)
+WEnd
+
+#Region Functions list
+
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func button_video_or_mp3_or_info_or_update_clicked()
 	If checkURL(GUICtrlRead($input_url)) = 0 Then Return
 	Local $path = GUICtrlRead($input_dest)
@@ -85,15 +106,27 @@ Func button_video_or_mp3_or_info_or_update_clicked()
 	enable_gui()
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func button_paste_clicked()
 	GUICtrlSetData($input_url, ClipGet())
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func button_select_clicked()
 	Local $destinationDirectory = FileSelectFolder("Select destination directory", "", 7, "", $form_main)
 	If $destinationDirectory <> "" Then GUICtrlSetData($input_dest, $destinationDirectory)
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func checkURL($url)
 	If $url == "" Then
 		GUICtrlSetData($edit_out, "Missing URL!")
@@ -102,6 +135,10 @@ Func checkURL($url)
 	Return 1
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func disable_gui()
 	For $i = 0 To UBound($mButtons, 2) -1
 		GUICtrlSetState($mButtons[0][$i], 128)
@@ -110,6 +147,10 @@ Func disable_gui()
 	$mButtons[1][7] = GUICtrlRead($input_dest)
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func enable_gui()
 	For $i = 0 To UBound($mButtons, 2) -1
 		GUICtrlSetState($mButtons[0][$i], 64)
@@ -118,6 +159,10 @@ Func enable_gui()
 	$iPID = -1
 EndFunc
 
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func close_clicked()
 	If BitAND(WinGetState($form_main), 8) Then
 		If ProcessExists($iPID) <> 0 Then
@@ -129,6 +174,4 @@ Func close_clicked()
 	EndIf
 EndFunc
 
-While 1
-	Sleep(10000)
-WEnd
+#EndRegion Functions list
