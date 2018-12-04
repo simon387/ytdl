@@ -1,3 +1,7 @@
+; #FUNCTION# ====================================================================================================================
+; Author ........: Simone Celia
+; Modified.......: Simone Celia
+; ===============================================================================================================================
 Func _singleton($sOccurenceName, $iFlag = 0)
 	Local Const $ERROR_ALREADY_EXISTS = 183
 	Local Const $SECURITY_DESCRIPTOR_REVISION = 1

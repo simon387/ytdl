@@ -9,13 +9,20 @@
 #pragma compile(Compression, 1)
 
 #NoTrayIcon
-#include "osFunctions.au3" ; #include <ButtonConstants.au3>;#include <EditConstants.au3>;Global Const $ES_AUTOVSCROLL = 64;Global Const $ES_AUTOHSCROLL = 128;Global Const $ES_READONLY = 2048;#include <GUIConstantsEx.au3>;Global Const $GUI_EVENT_CLOSE = -3;#include <StaticConstants.au3>;Global Const $GUI_ENABLE = 64;Global Const $GUI_DISABLE = 128;#include <WindowsConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
+#include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
+#include <ColorConstants.au3>
+#include <EditConstants.au3>
+#include <AutoItConstants.au3>
+#include <FileConstants.au3>
+#include "osFunctions.au3"
+; #include <ButtonConstants.au3>Global Const $ES_READONLY = 2048;#include <StaticConstants.au3>;Global Const $WS_HSCROLL = 0x00100000;Global Const $WS_VSCROLL = 0x00200000;Global Const $WS_CLIPSIBLINGS = 0x04000000;#include <Misc.au3>
 
 _singleton(@ScriptName)
 
 #Region Global Variables and Constants with GUI code
 
-Global Const $form_main = GUICreate("YTDLUI by simon - v0.14 - Hit {esc} to force exit!", 543, 323, -1, -1, -2133917696, 0);BitOR($GUI_SS_DEFAULT_GUI,$WS_MAXIMIZEBOX,$WS_SIZEBOX,$WS_THICKFRAME,$WS_TABSTOP)
+Global Const $form_main = GUICreate("YTDLUI by simon - v0.14 - Hit {esc} to force exit!", 543, 323, -1, -1, BitOR($GUI_SS_DEFAULT_GUI, $WS_MAXIMIZEBOX, $WS_SIZEBOX, $WS_THICKFRAME,$WS_TABSTOP), 0)
 Global Const $input_url = GUICtrlCreateInput("http://www.youtube.com/watch?v=ebXbLfLACGM", 8, 10, 391, 21)
 GUICtrlSetTip(-1, "Paste here youtube link", "Info", 1, 1)
 Global Const $button_paste = GUICtrlCreateButton("Paste", 411, 8, 123, 25)
@@ -31,8 +38,8 @@ GUICtrlSetTip(-1, "Start Video Download", "Info", 1, 1)
 GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_mp3 = GUICtrlCreateButton("Download mp3", 143, 288, 123, 25)
 GUICtrlSetTip(-1, "Start Mp3 Download", "Info", 1, 1)
-GUICtrlSetBkColor(-1, 16711680);#include <ColorConstants.au3>
-GUICtrlSetColor(-1, 16777215 )
+GUICtrlSetBkColor(-1, $COLOR_RED)
+GUICtrlSetColor(-1, $COLOR_WHITE)
 GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_update = GUICtrlCreateButton("Update", 277, 288, 123, 25)
 GUICtrlSetTip(-1, "Update to last YTDL version", "Info", 1, 1)
@@ -40,11 +47,11 @@ GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
 Global Const $button_info = GUICtrlCreateButton("About", 412, 288, 123, 25)
 GUICtrlSetTip(-1, "youtube-dl.exe -h >> output", "NERD!", 2, 1)
 GUICtrlSetOnEvent(-1, "button_video_or_mp3_or_info_or_update_clicked")
-Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 525, 209, 70256832);BitOR($ES_AUTOVSCROLL,$ES_AUTOHSCROLL,$ES_READONLY,$WS_HSCROLL,$WS_VSCROLL,$WS_CLIPSIBLINGS)
+Global Const $edit_out = GUICtrlCreateEdit("", 8, 72, 525, 209, BitOR($ES_AUTOVSCROLL, $ES_AUTOHSCROLL, $ES_READONLY, $WS_HSCROLL, $WS_VSCROLL, $WS_CLIPSIBLINGS));
 GUISetState(@SW_SHOW)
 HotKeySet("{esc}", "close_clicked")
 Opt('GUIOnEventMode', 1)
-GUISetOnEvent(-3, "close_clicked", $form_main)
+GUISetOnEvent($GUI_EVENT_CLOSE, "close_clicked", $form_main)
 Global Const $aAccelKeys[1][2] = [["{enter}", $button_mp3]]
 GUISetAccelerators($aAccelKeys)
 Global $iPID = -1
@@ -87,7 +94,7 @@ Func button_video_or_mp3_or_info_or_update_clicked()
 			$sCommand = @TempDir & '\youtube-dl.exe -U'
 	EndSelect
 	;ConsoleWrite($sCommand & ' ' & $sAudioParam & @CRLF)
-	$iPID = Run($sCommand & ' ' & $sAudioParam, @TempDir, @SW_HIDE, 0x2 + 0x4);$STDERR_CHILD + $STDOUT_CHILD)
+	$iPID = Run($sCommand & ' ' & $sAudioParam, @TempDir, @SW_HIDE, $STDERR_CHILD + $STDOUT_CHILD)
 	GUICtrlSetData($edit_out, '')
 	While 1
 		$sOutput = StdoutRead($iPID)
@@ -119,7 +126,7 @@ EndFunc
 ; Modified.......: Simone Celia
 ; ===============================================================================================================================
 Func button_select_clicked()
-	Local $destinationDirectory = FileSelectFolder("Select destination directory", "", 7, "", $form_main)
+	Local $destinationDirectory = FileSelectFolder("Select destination directory", "", $FSF_CREATEBUTTON + $FSF_NEWDIALOG + $FSF_EDITCONTROL, "", $form_main)
 	If $destinationDirectory <> "" Then GUICtrlSetData($input_dest, $destinationDirectory)
 EndFunc
 
@@ -141,7 +148,7 @@ EndFunc
 ; ===============================================================================================================================
 Func disable_gui()
 	For $i = 0 To UBound($mButtons, 2) -1
-		GUICtrlSetState($mButtons[0][$i], 128)
+		GUICtrlSetState($mButtons[0][$i], $GUI_DISABLE)
 	Next
 	$mButtons[1][6] = GUICtrlRead($input_url)
 	$mButtons[1][7] = GUICtrlRead($input_dest)
@@ -153,7 +160,7 @@ EndFunc
 ; ===============================================================================================================================
 Func enable_gui()
 	For $i = 0 To UBound($mButtons, 2) -1
-		GUICtrlSetState($mButtons[0][$i], 64)
+		GUICtrlSetState($mButtons[0][$i], $GUI_ENABLE)
 		GUICtrlSetData($mButtons[0][$i], $mButtons[1][$i])
 	Next
 	$iPID = -1
