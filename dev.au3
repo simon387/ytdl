@@ -1,4 +1,4 @@
-;~ ShellExecute(@TempDir)
+ShellExecute(@TempDir)
 #include <GUIConstantsEx.au3>
 #include <WindowsConstants.au3>
 
