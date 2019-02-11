@@ -224,7 +224,7 @@ EndFunc
 ; Modified.......: Simone Celia
 ; ===============================================================================================================================
 Func close_clicked()
-	If BitAND(WinGetState($form_main), 8) Then
+	If BitAND(WinGetState($form_main), $WIN_STATE_ACTIVE) Then
 		If ProcessExists($iPID) <> 0 Then
 			ProcessClose($iPID)
 			GUICtrlSetData($edit_out, $EN_INTERRUPT_MESSAGE)
